@@ -3,12 +3,13 @@ import logoUrl from "./assets/mts_icon_a.raw.svg";
 import { NavTab } from "./navTabsUI";
 import { ShowPageItem, ShowPageRoot } from "./showPageData";
 import { $C, classNames } from "mts-dom";
-import { IItem } from "./types/items";
+import { IItem, Item } from "./types/items";
 
 export class ShowPage extends UIPParent {
   menuElement: HTMLElement;
-  mainMenu: NavTab<ShowPageItem>;
+  mainMenu: NavTab<IItem<IUIPiece>>;
   private _showMenu = false;
+  private _items: IItem<IUIPiece>[] = [];
 
   constructor(rootItems: ShowPageRoot) {
     const title = `MTS PROJECT - SHOW - UIP01`;
@@ -32,8 +33,21 @@ export class ShowPage extends UIPParent {
     super(html, "main");
     this.menuElement = this.root.querySelector("._menu")!;
 
+    for (const rootItem of rootItems) {
+      if (rootItem.data instanceof Array) {
+        this._items.push(
+          new Item(
+            rootItem,
+            new ShowSubPages(rootItem.data as IItem<IUIPiece>[])
+          )
+        );
+      } else {
+        this._items.push(rootItem as IItem<IUIPiece>);
+      }
+    }
+
     this.mainMenu = new NavTab(
-      rootItems,
+      this._items,
       (item) => {
         this.setRootItem(item);
       },
@@ -73,24 +87,56 @@ export class ShowPage extends UIPParent {
     this.showMenu(false);
     this.clearChildren();
 
-    if ("children" in item) {
-      console.log("Item with children")
-      const subMenu = new NavTab(
-        item.children as IItem<IUIPiece>[],
-        (_item) => {
-
-        },
-        {
-          rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
-          selectedClasses: classNames(`<tw class="bg-stone-300 text-orange-800"/>`),
-          itemClasses: "",
-          unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
-        }
-      );
+    if (item.data instanceof Array) {
+      console.log("Item with children");
+      const subMenu = new NavTab(item.data, (_item) => {}, {
+        rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
+        selectedClasses: classNames(
+          `<tw class="bg-stone-300 text-orange-800"/>`
+        ),
+        itemClasses: "",
+        unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
+      });
+      this.appendChild(subMenu);
     } else {
-      this.appendChild((item as IItem<IUIPiece>).item);
+      this.appendChild((item as IItem<IUIPiece>).data);
     }
   }
 }
 
+class ShowSubPages extends UIPParent {
+  _currentContent?: IUIPiece;
+  constructor(items: IItem<IUIPiece>[]) {
+    super("<div></div>");
+    const subMenu = new NavTab(
+      items,
+      (item) => {
+        subMenu.selected(item.name);
+        this.currentContent(item.data);
+      },
+      {
+        rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
+        selectedClasses: classNames(
+          `<tw class="bg-stone-300 text-orange-800"/>`
+        ),
+        itemClasses: "",
+        unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
+      }
+    );
+    this.appendChild(subMenu);
+    subMenu.selected(items[0].name);
+    this.currentContent(items[0].data);
+}
 
+  currentContent(content?: IUIPiece) {
+    if (content != undefined && content !== this._currentContent) {
+      if (this._currentContent) {
+        this.removeChild(this._currentContent);
+      }
+      this.appendChild(content);
+      this._currentContent = content;
+    }
+
+    return this._currentContent;
+  }
+}

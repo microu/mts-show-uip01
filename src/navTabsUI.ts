@@ -36,9 +36,7 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     listener?: (item: T) => void,
     options?: TNavTabsUIOptions
   ) {
-
-    console.log("NavTab items:", items)
-
+    console.log("NavTab items:", items);
 
     if (options == undefined) {
       options = {};
@@ -66,9 +64,9 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     this.selectedClasses = (<string>opt.selectedClasses).split(/\s+/);
     this.unselectedClasses = (<string>opt.unselectedClasses).split(/\s+/);
     this.tabsParent = new UIPParent(this.root.querySelector("ul")!);
-    console.log("NavTab items:", items, items.length, items instanceof Array)
-    for (let i = 0; i < items.length;i+=1){
-      const item =items[i]; 
+    console.log("NavTab items:", items, items.length, items instanceof Array);
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items[i];
       if (item.label == undefined) {
         item.label = item.name;
       }
@@ -80,7 +78,7 @@ export class NavTab<T extends ILabeled> extends UIPBase {
       this.tabs.push(new Item<IUIPiece>(item.name, li));
 
       li.root.addEventListener("click", (e) => {
-        e.stopPropagation()
+        e.stopPropagation();
         if (this.listener) {
           this.listener(item);
         }
@@ -100,13 +98,13 @@ export class NavTab<T extends ILabeled> extends UIPBase {
       for (const tab of this.tabs) {
         if (tab.name == name) {
           toogleClasses(
-            tab.item.root,
+            tab.data.root,
             this.unselectedClasses,
             this.selectedClasses
           );
         } else {
           toogleClasses(
-            tab.item.root,
+            tab.data.root,
             this.selectedClasses,
             this.unselectedClasses
           );

@@ -26,11 +26,11 @@ export interface IItemInfoPartial extends ILabeledPartial {
 }
 
 export interface IItem<T> extends IItemInfo {
-  item: T;
+  data: T;
 }
 
-export interface IItemPartial<T> extends IItemInfo {
-  item: T;
+export interface IItemPartial<T> extends IItemInfoPartial {
+  data: T;
 }
 
 export class Labeled implements ILabeled {
@@ -71,18 +71,18 @@ export class Item<T> extends ItemInfo implements IItem<T> {
 
     super(arg);
 
-    if ("item" in arg) {
-      this._item = arg.item;
+    if ("data" in arg) {
+      this._item = arg.data;
     }
     if (item != undefined) {
       this._item = item;
     }
   }
 
-  get item(): T {
+  get data(): T {
     return this._item;
   }
-  set item(value: T) {
+  set data(value: T) {
     this._item = value;
   }
 }
