@@ -1,8 +1,9 @@
-import { UIPParent } from "mts-uip";
+import { IUIPiece, UIPParent } from "mts-uip";
 import logoUrl from "./assets/mts_icon_a.raw.svg";
 import { NavTab } from "./navTabsUI";
 import { ShowPageItem, ShowPageRoot } from "./showPageData";
-import { $C } from "mts-dom";
+import { $C, classNames } from "mts-dom";
+import { IItem } from "./types/items";
 
 export class ShowPage extends UIPParent {
   menuElement: HTMLElement;
@@ -55,7 +56,7 @@ export class ShowPage extends UIPParent {
   }
 
   showMenu(state?: boolean) {
-    console.log("showMenu:", state)
+    console.log("showMenu:", state);
     if (state != undefined && state != this._showMenu) {
       this._showMenu = state;
       if (this._showMenu) {
@@ -72,6 +73,24 @@ export class ShowPage extends UIPParent {
     this.showMenu(false);
     this.clearChildren();
 
-    this.appendChild(item.item);
+    if ("children" in item) {
+      console.log("Item with children")
+      const subMenu = new NavTab(
+        item.children as IItem<IUIPiece>[],
+        (_item) => {
+
+        },
+        {
+          rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
+          selectedClasses: classNames(`<tw class="bg-stone-300 text-orange-800"/>`),
+          itemClasses: "",
+          unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
+        }
+      );
+    } else {
+      this.appendChild((item as IItem<IUIPiece>).item);
+    }
   }
 }
+
+

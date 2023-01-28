@@ -36,6 +36,10 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     listener?: (item: T) => void,
     options?: TNavTabsUIOptions
   ) {
+
+    console.log("NavTab items:", items)
+
+
     if (options == undefined) {
       options = {};
     }
@@ -62,8 +66,9 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     this.selectedClasses = (<string>opt.selectedClasses).split(/\s+/);
     this.unselectedClasses = (<string>opt.unselectedClasses).split(/\s+/);
     this.tabsParent = new UIPParent(this.root.querySelector("ul")!);
-
-    for (const item of items) {
+    console.log("NavTab items:", items, items.length, items instanceof Array)
+    for (let i = 0; i < items.length;i+=1){
+      const item =items[i]; 
       if (item.label == undefined) {
         item.label = item.name;
       }
