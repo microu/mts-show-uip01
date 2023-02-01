@@ -1,15 +1,18 @@
-import { IUIPiece, UIPParent } from "mts-uip";
+import { IUIPiece, UIPBase, UIPParent } from "mts-uip";
 import logoUrl from "./assets/mts_icon_a.raw.svg";
 import { NavTab } from "./navTabsUI";
-import { ShowPageItem, ShowPageRoot } from "./showPageData";
+import { ShowPageRoot } from "./showPageData";
 import { $C, classNames } from "mts-dom";
 import { IItem, Item } from "./types/items";
+import { ContentSwitcher } from "./uip/contentSwitch";
 
-export class ShowPage extends UIPParent {
+export class ShowPage extends UIPBase {
   menuElement: HTMLElement;
   mainMenu: NavTab<IItem<IUIPiece>>;
   private _showMenu = false;
   private _items: IItem<IUIPiece>[] = [];
+  contentParent: HTMLElement;
+  contentSwitcher: ContentSwitcher;
 
   constructor(rootItems: ShowPageRoot) {
     const title = `MTS PROJECT - SHOW - UIP01`;
@@ -30,9 +33,10 @@ export class ShowPage extends UIPParent {
   <main class="container mx-auto"></main>
   </div>
   `;
-    super(html, "main");
+    super(html);
     this.menuElement = this.root.querySelector("._menu")!;
-
+    this.contentParent = this.root.querySelector("main")!;
+    this.contentSwitcher = new ContentSwitcher(this.contentParent );
     for (const rootItem of rootItems) {
       if (rootItem.data instanceof Array) {
         this._items.push(
@@ -82,37 +86,23 @@ export class ShowPage extends UIPParent {
     return this._showMenu;
   }
 
-  setRootItem(item: ShowPageItem) {
+  setRootItem(item: IItem<IUIPiece>) {
     console.log("setRootItem:", item);
     this.showMenu(false);
-    this.clearChildren();
-
-    if (item.data instanceof Array) {
-      console.log("Item with children");
-      const subMenu = new NavTab(item.data, (_item) => {}, {
-        rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
-        selectedClasses: classNames(
-          `<tw class="bg-stone-300 text-orange-800"/>`
-        ),
-        itemClasses: "",
-        unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
-      });
-      this.appendChild(subMenu);
-    } else {
-      this.appendChild((item as IItem<IUIPiece>).data);
-    }
+    this.contentSwitcher.switchContent(item.data);
   }
 }
 
 class ShowSubPages extends UIPParent {
   _currentContent?: IUIPiece;
+  _switcher: ContentSwitcher;
   constructor(items: IItem<IUIPiece>[]) {
     super("<div></div>");
     const subMenu = new NavTab(
       items,
       (item) => {
         subMenu.selected(item.name);
-        this.currentContent(item.data);
+        this._switcher.switchContent(item.data);
       },
       {
         rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
@@ -124,11 +114,13 @@ class ShowSubPages extends UIPParent {
       }
     );
     this.appendChild(subMenu);
+    this.appendChild(items[0].data);
+    this._switcher = new ContentSwitcher(this.root, items[0].data.root);
     subMenu.selected(items[0].name);
-    this.currentContent(items[0].data);
-}
+  }
 
-  currentContent(content?: IUIPiece) {
+  currentContent(content: IUIPiece) {
+
     if (content != undefined && content !== this._currentContent) {
       if (this._currentContent) {
         this.removeChild(this._currentContent);

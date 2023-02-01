@@ -17,6 +17,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "mts-dom": "^0.1.3",
     "mts-uip": "^0.1.2",
     "tailwind-merge": "^1.8.1"
   }
