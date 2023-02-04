@@ -24,11 +24,61 @@ export class IconsCustomDemo extends UIPParent {
     `,
       "main"
     );
-    new SVGIcon(svgCircle)
+    // avoid warnings
+    new SVGIcon(svgCircle);
+    svgDiamond;
+
+    
     let code = `new SVGIcon(svgCircle)`;
+
     this.appendChild(new SVGIconExample(eval(code), { code }));
 
     code = `new SVGIcon(svgDiamond)`;
     this.appendChild(new SVGIconExample(eval(code), { codeBelow: code }));
+
+    code = `new SVGIcon(
+      svgCircle,
+      \'<tw class="bg-rose-600 fill-cyan-900">\'
+    )`;
+    this.appendChild(new SVGIconExample(eval(code), { code }));
+
+    code = `
+    new SVGIcon(
+      svgDiamond, "w-32 fill-red-800"
+    )`;
+    this.appendChild(new SVGIconExample(eval(code), { codeBelow: code }));
+
+    code = `new SVGIcon(
+      svgDiamond,
+      \`<tw class="w-64 fill-[none] stroke-1 stroke-amber-800">\`
+    )`;
+    this.appendChild(new SVGIconExample(eval(code), { codeBehind: code }));
+
+    code = `new SVGIcon(svgDiamond,
+      \`<tw class="w-32 fill-[none] stroke-[3px] stroke-amber-800">\`,
+      \`<div class="bg-red-800 rounded-tl-3xl"></div>\`
+    )
+    `;
+    this.appendChild(new SVGIconExample(eval(code), { codeBelow: code }));
+
+    this.appendChild(
+      new SVGIconExample(new SVGIcon(svgCircle, "w-20"), {
+        text: `Cillum dolore do dolor est ex sunt non consequat exercitation esse qui occaecat minim velit. Irure sint sunt elit sint magna ipsum enim aute.
+            Mollit adipisicing adipisicing exercitation minim sit excepteur ad.
+      Pariatur qui magna anim eu ex. Culpa ipsum magna duis nulla id elit commodo id proident et ullamco non ut.`,
+      })
+    );
+
+    code = `new SVGIcon(
+      svgCircle, "fill-orange-700 mx-auto bg-cyan-800",
+      \`<div class="w-64 bg-stone-400">\`)
+    `;
+
+    this.appendChild(
+      new SVGIconExample(eval(code), {
+        title: "Example with title and code below",
+        codeBelow: code,
+      })
+    );
   }
 }
