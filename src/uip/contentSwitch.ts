@@ -1,4 +1,4 @@
-import { removeAllChildren } from "mts-dom";
+
 import { IUIPiece, UIPBase } from "mts-uip";
 
 export class ContentSwitcher extends UIPBase {

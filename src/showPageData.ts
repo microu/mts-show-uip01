@@ -1,12 +1,11 @@
 import { IUIPiece, UIPBase } from "mts-uip";
 import { IItem, Item } from "./types/items";
 
-export type ShowPageItem =
+export type TShowPageItem =
   IItem<IUIPiece>
   | IItem<IItem<IUIPiece>[]>;
-export type ShowPageRoot = ShowPageItem[];
 
-export const showPageRoot: ShowPageRoot = [
+export const showPageItems: TShowPageItem[] = [
   new Item("alpha", new UIPBase(`<h1>alpha</h1>`)),
   new Item("BETA", [
     new Item("beta01", new UIPBase(`<h1>BETA-01</h1>`)),

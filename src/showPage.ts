@@ -1,8 +1,7 @@
 import { IUIPiece, UIPBase, UIPParent } from "mts-uip";
 import logoUrl from "./assets/mts_icon_a.raw.svg";
 import { NavTab } from "./navTabsUI";
-import { ShowPageRoot } from "./showPageData";
-import { $C, classNames } from "mts-dom";
+import { TShowPageItem } from "./showPageData";
 import { IItem, Item } from "./types/items";
 import { ContentSwitcher } from "./uip/contentSwitch";
 
@@ -14,7 +13,7 @@ export class ShowPage extends UIPBase {
   contentParent: HTMLElement;
   contentSwitcher: ContentSwitcher;
 
-  constructor(rootItems: ShowPageRoot) {
+  constructor(pageItems: TShowPageItem[]) {
     const title = `MTS PROJECT - SHOW - UIP01`;
     const html = `
   <div class="">
@@ -36,45 +35,39 @@ export class ShowPage extends UIPBase {
     super(html);
     this.menuElement = this.root.querySelector("._menu")!;
     this.contentParent = this.root.querySelector("main")!;
-    this.contentSwitcher = new ContentSwitcher(this.contentParent );
-    for (const rootItem of rootItems) {
-      if (rootItem.data instanceof Array) {
+    this.contentSwitcher = new ContentSwitcher(this.contentParent);
+    for (const item of pageItems) {
+      if (item.data instanceof Array) {
         this._items.push(
-          new Item(
-            rootItem,
-            new ShowSubPages(rootItem.data as IItem<IUIPiece>[])
-          )
+          new Item(item, new ShowSubPages(item.data as IItem<IUIPiece>[]))
         );
       } else {
-        this._items.push(rootItem as IItem<IUIPiece>);
+        this._items.push(item as IItem<IUIPiece>);
       }
     }
 
     this.mainMenu = new NavTab(
       this._items,
       (item) => {
-        this.setRootItem(item);
+        this.selectMainItem(item);
       },
       {
-        rootClasses: $C(
-          `<tw class=" bg-orange-900 border-4 border-orange-200 rounded-md"/>`
-        ),
-        listClasses: $C(`<tw class="flex-col gap-2 p-2"/>`),
-        itemClasses: $C(
-          `<tw class="bg-orange-200 text-orange-900 text-center rounded-lg"/>`
-        ),
-        selectedClasses: $C(`<tw class="text-red-700"/>`),
+        rootClasses: `<tw class=" bg-orange-900 border-4 border-orange-200 rounded-md"/>`,
+        listClasses: `<tw class="flex-col gap-2 p-2"/>`,
+        itemClasses: `<tw class="bg-orange-200 text-orange-900 text-center rounded-lg"/>`,
+        selectedClasses: `<tw class="text-red-700"/>`,
       }
     );
-    this.mainMenu.selected(rootItems[0].name);
+
+    this.selectMainItem(this._items[0]);
     this.menuElement.appendChild(this.mainMenu.root);
+    // this.mainMenu.selected(pageItems[0].name);
     this.root.querySelector("._menu_button")!.addEventListener("click", () => {
       this.showMenu(!this.showMenu());
     });
   }
 
   showMenu(state?: boolean) {
-    console.log("showMenu:", state);
     if (state != undefined && state != this._showMenu) {
       this._showMenu = state;
       if (this._showMenu) {
@@ -86,10 +79,10 @@ export class ShowPage extends UIPBase {
     return this._showMenu;
   }
 
-  setRootItem(item: IItem<IUIPiece>) {
-    console.log("setRootItem:", item);
+  selectMainItem(item: IItem<IUIPiece>) {
     this.showMenu(false);
     this.contentSwitcher.switchContent(item.data);
+    this.mainMenu.selected(item.name);
   }
 }
 
@@ -105,12 +98,10 @@ class ShowSubPages extends UIPParent {
         this._switcher.switchContent(item.data);
       },
       {
-        rootClasses: classNames(`<tw class="bg-stone-800 text-stone-200"/>`),
-        selectedClasses: classNames(
-          `<tw class="bg-stone-300 text-orange-800"/>`
-        ),
-        itemClasses: "",
-        unselectedClasses: classNames(`<tw class="hover:bg-stone-600">`),
+        rootClasses: `<tw class="bg-stone-800 text-stone-200"/>`,
+        selectedClasses: `<tw class="bg-stone-300 text-orange-800"/>`,
+        itemClasses: ``,
+        unselectedClasses: `<tw class="hover:bg-stone-600">`,
       }
     );
     this.appendChild(subMenu);
@@ -120,7 +111,6 @@ class ShowSubPages extends UIPParent {
   }
 
   currentContent(content: IUIPiece) {
-
     if (content != undefined && content !== this._currentContent) {
       if (this._currentContent) {
         this.removeChild(this._currentContent);

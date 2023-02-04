@@ -1,7 +1,6 @@
 import "./style.css";
 import { ShowPage } from "./showPage";
-import { showPageRoot } from "./showPageData";
+import { showPageItems } from "./showPageData";
 
-const showPage = new ShowPage(showPageRoot);
-showPage.setRootItem(showPageRoot[0]);
+const showPage = new ShowPage(showPageItems);
 document.querySelector<HTMLDivElement>("#app")!.appendChild(showPage.root);

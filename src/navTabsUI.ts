@@ -1,14 +1,14 @@
-import { classNames, toogleClasses } from "mts-dom";
+import { classNames, TClassNamesArg, toogleClasses } from "mts-dom";
 import { IUIPiece, IUIPParent, UIPBase, UIPParent } from "mts-uip";
 import { ILabeled, Item } from "./types/items";
 import { twMerge } from "tailwind-merge";
 
 type TNavTabsUIOptions = {
-  rootClasses?: string | string[];
-  listClasses?: string | string[];
-  itemClasses?: string | string[];
-  selectedClasses?: string | string[];
-  unselectedClasses?: string | string[];
+  rootClasses?: TClassNamesArg;
+  listClasses?: TClassNamesArg;
+  itemClasses?: TClassNamesArg;
+  selectedClasses?: TClassNamesArg;
+  unselectedClasses?: TClassNamesArg;
 };
 
 type TNavTabsUIOptionsKeys = keyof TNavTabsUIOptions;
@@ -36,8 +36,6 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     listener?: (item: T) => void,
     options?: TNavTabsUIOptions
   ) {
-    console.log("NavTab items:", items);
-
     if (options == undefined) {
       options = {};
     }
@@ -64,7 +62,7 @@ export class NavTab<T extends ILabeled> extends UIPBase {
     this.selectedClasses = (<string>opt.selectedClasses).split(/\s+/);
     this.unselectedClasses = (<string>opt.unselectedClasses).split(/\s+/);
     this.tabsParent = new UIPParent(this.root.querySelector("ul")!);
-    console.log("NavTab items:", items, items.length, items instanceof Array);
+
     for (let i = 0; i < items.length; i += 1) {
       const item = items[i];
       if (item.label == undefined) {
