@@ -1,4 +1,5 @@
 import { IUIPiece, UIPBase } from "mts-uip";
+import { IconsCustomDemo } from "./show/iconsCustomDemo";
 import { IItem, Item } from "./types/items";
 
 export type TShowPageItem =
@@ -6,7 +7,9 @@ export type TShowPageItem =
   | IItem<IItem<IUIPiece>[]>;
 
 export const showPageItems: TShowPageItem[] = [
-  new Item("alpha", new UIPBase(`<h1>alpha</h1>`)),
+  new Item("Icons", [
+    new Item("Custom", new IconsCustomDemo())
+  ]),
   new Item("BETA", [
     new Item("beta01", new UIPBase(`<h1>BETA-01</h1>`)),
     new Item("beta02", new UIPBase(`<h1>BETA-02</h1>`)),
