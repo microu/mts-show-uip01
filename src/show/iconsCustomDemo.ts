@@ -28,7 +28,6 @@ export class IconsCustomDemo extends UIPParent {
     new SVGIcon(svgCircle);
     svgDiamond;
 
-    
     let code = `new SVGIcon(svgCircle)`;
 
     this.appendChild(new SVGIconExample(eval(code), { code }));

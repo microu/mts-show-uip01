@@ -17,6 +17,9 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "highlight.js": "^11.7.0",
     "mts-dom": "^0.1.3",
     "mts-uip": "^0.1.2",
