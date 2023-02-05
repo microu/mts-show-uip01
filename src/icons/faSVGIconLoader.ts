@@ -32,7 +32,7 @@ function _prepareFAIcons(_faImport: { [key: string]: TFASvgIconDataImported }) {
   const r: { [name: string]: TFASvgIconData } = {};
   for (const [_k, data] of Object.entries(_faImport)) {
     if (typeof data.icon == "undefined") {
-      console.log("Undefined icon:", _k, data);
+
       continue;
     }
 
@@ -68,7 +68,7 @@ export class FASVGIconSetLoader implements ISVGIconLoader {
 
   constructor(faIconsImport: { [key: string]: TFASvgIconDataImported }) {
     const svgIcons = _prepareFAIcons(faIconsImport);
-    console.log("PREPARED:", svgIcons);
+
     for (const [name, data] of Object.entries(svgIcons)) {
       this._iconNames.push(name);
       this._recordsMap[name] = data;
@@ -76,7 +76,6 @@ export class FASVGIconSetLoader implements ISVGIconLoader {
         this._recordsMap[alias] = data;
       }
     }
-    console.log("Records:", this._recordsMap);
   }
 
   get iconNames(): string[] {

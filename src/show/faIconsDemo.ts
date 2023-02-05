@@ -1,4 +1,5 @@
 import { UIPParent } from "mts-uip";
+import boxicons from "../icons/boxicons";
 import { faBrands } from "../icons/faBrandsIconLoader";
 import { faRegular } from "../icons/faRegularIconLoader";
 import { faSolid } from "../icons/faSolidIconLoader";
@@ -35,7 +36,6 @@ export class FAIconsDemo extends UIPParent {
 
     for (let i = 0; i < 16; i += 1) {
       const name = faRegular.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading FA icon:", name);
       regularIcons.appendChild(faRegular.loadIcon(name));
     }
     this.appendChild(regularIcons);
@@ -46,7 +46,6 @@ export class FAIconsDemo extends UIPParent {
 
     for (let i = 0; i < 16; i += 1) {
       const name = faSolid.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading FA icon:", name);
       solidIcons.appendChild(faSolid.loadIcon(name));
     }
     this.appendChild(solidIcons);
@@ -55,38 +54,59 @@ export class FAIconsDemo extends UIPParent {
     n = faBrands.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
       const name = faBrands.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading FA icon:", name);
       brandIcons.appendChild(faBrands.loadIcon(name));
     }
     this.appendChild(brandIcons);
-  
-    const hero24SolidIcons = new UIPParent(`<div class="flex gap-2"></div>`)
-    n = hi24Solid.iconNames.length
+
+    const hero24SolidIcons = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = hi24Solid.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
       const name = hi24Solid.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading icon:", name);
       hero24SolidIcons.appendChild(hi24Solid.loadIcon(name));
     }
-    this.appendChild(hero24SolidIcons)
+    this.appendChild(hero24SolidIcons);
 
-      
-    const hero20SolidIcons = new UIPParent(`<div class="flex gap-2"></div>`)
-    n = hi20Solid.iconNames.length
+    const hero20SolidIcons = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = hi20Solid.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
       const name = hi20Solid.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading icon:", name);
       hero20SolidIcons.appendChild(hi20Solid.loadIcon(name));
     }
-    this.appendChild(hero20SolidIcons)
+    this.appendChild(hero20SolidIcons);
 
-    const hero24OutlineIcons = new UIPParent(`<div class="flex gap-2"></div>`)
-    n = hi24Outline.iconNames.length
+    const hero24OutlineIcons = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = hi24Outline.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
       const name = hi24Outline.iconNames[Math.floor(Math.random() * n)];
-      console.log("Loading icon:", name);
       hero24OutlineIcons.appendChild(hi24Outline.loadIcon(name));
     }
-    this.appendChild(hero24OutlineIcons)
+    this.appendChild(hero24OutlineIcons);
+
+    const boxIconsRegular = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxicons.regular.iconNames.length;
+    for (let i = 0; i < 16; i += 1) {
+      const name = boxicons.regular.iconNames[Math.floor(Math.random() * n)];
+      boxIconsRegular.appendChild(boxicons.regular.loadIcon(name));
+    }
+    this.appendChild(boxIconsRegular);
+
+    const boxIconsLogos = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxicons.logos.iconNames.length;
+    for (let i = 0; i < 16; i += 1) {
+      const name = boxicons.logos.iconNames[Math.floor(Math.random() * n)];
+      boxIconsLogos.appendChild(boxicons.logos.loadIcon(name));
+    }
+    this.appendChild(boxIconsLogos);
+
+
+    const boxIconsSolid = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxicons.solid.iconNames.length;
+    for (let i = 0; i < 16; i += 1) {
+      const name = boxicons.solid.iconNames[Math.floor(Math.random() * n)];
+      boxIconsSolid.appendChild(boxicons.solid.loadIcon(name));
+    }
+    this.appendChild(boxIconsSolid);
+
+
   }
-  
 }
