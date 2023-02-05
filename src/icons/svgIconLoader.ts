@@ -1,3 +1,4 @@
+import { TClassNamesArg } from "mts-dom";
 import { SVGIcon } from "./svgIcon";
 
 export interface ISVGIconLoader {
@@ -6,6 +7,84 @@ export interface ISVGIconLoader {
   has(iconName: string, iconFamily?: string): boolean;
   loadIcon(iconName: string, iconFamily?: string): SVGIcon;
 }
+
+
+
+export class SVGIconLoader implements ISVGIconLoader {
+  svgDoc: Document;
+  _iconNames?: string[];
+  _iconCache = new Map<string, SVGIcon>()
+  iconAttributes: {
+    fill?: string | undefined;
+    stroke?: string | undefined;
+    "stroke-width"?: string | undefined;
+  };
+  nameFunc: (symbol: SVGSymbolElement) => string;
+
+  constructor(
+    svgSrc: string,
+    iconAttributes: { fill?: string; stroke?: string; "stroke-width"?: string } = {},
+    nameFunc?:(symbol:SVGSymbolElement)=> string
+  ) {
+    const parser = new DOMParser();
+    this.svgDoc = parser.parseFromString(svgSrc, "application/xml");
+    // Presentation attributes have lower priority
+    // than other CSS style rules specified in author style sheets or ‘style’  attribute
+    this.iconAttributes = iconAttributes;
+    this.nameFunc= nameFunc ? nameFunc : (symbol:SVGSymbolElement)=> symbol.id;  
+  }
+
+  families(_iconName: string): string[] {
+    return ["default"];
+  }
+
+
+  has(iconName: string, _iconFamily?: string | undefined): boolean {
+    return this.iconNames.indexOf(iconName) >= 0;
+  }
+
+  loadIcon(iconName: string, _iconFamily?: string | undefined): SVGIcon {
+    return this.icon(iconName);
+  }
+
+  get iconNames() {
+    if (this._iconNames == undefined) {
+      const nodes = this.svgDoc.querySelectorAll("symbol");
+      this._iconNames = [];
+      nodes.forEach((symbol) => {
+        const name = this.nameFunc(symbol)
+          this._iconNames!.push(name);
+      });
+    }
+    return this._iconNames;
+  }
+
+  icon(
+    name: string,
+    classes?: TClassNamesArg ): SVGIcon {
+    return new SVGIcon(this.svgElement(name), classes);
+  }
+
+  svgElement(name: string) {
+    const symbol = this.svgDoc.getElementById(name);
+    if (!symbol) {
+      throw new Error(`Unknown icon name ${name}`);
+    }
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", symbol!.getAttribute("viewBox")!);
+    for (const [name, value] of Object.entries(this.iconAttributes)) {
+      svg.setAttribute(name, value);
+    }
+
+    for (let i = 0; i < symbol.children.length; i += 1) {
+      const child = symbol.children[i];
+      svg.appendChild(child.cloneNode(true));
+    }
+    return svg;
+  }
+}
+
 
 export class SVGIconFamiliesLoader implements ISVGIconLoader {
   _iconNames: string[];

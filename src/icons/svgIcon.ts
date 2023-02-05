@@ -8,6 +8,7 @@ import {
 } from "mts-dom";
 import { UIPBase } from "mts-uip";
 
+
 type TSVGIconOptions = {
   classes?: TClassNamesArg;
   attributes?: { [name: string]: string };
