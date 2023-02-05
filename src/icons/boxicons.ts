@@ -1,23 +1,12 @@
-import { SVGIcon } from "./svgIcon";
-import { ISVGIconLoader, SVGIconLoader } from "./svgIconLoader";
+import { SVGIconLoader } from "./svgIconLoader";
 import boxiconwRegularSVG from "./boxicons.d/boxicons-regular.svg?raw";
 import boxiconSolidSVG from "./boxicons.d/boxicons-solid.svg?raw";
 import boxiconLogosSVG from "./boxicons.d/boxicons-logos.svg?raw";
 
-class _BoxIcons {
-  get regular(): ISVGIconLoader {
-    return new SVGIconLoader(boxiconwRegularSVG);
-  }
-  get solid(): ISVGIconLoader {
-    return new SVGIconLoader(boxiconSolidSVG);
-  }
-  get logos(): ISVGIconLoader {
-    return new SVGIconLoader(boxiconLogosSVG);
-  }
-}
 
-const boxicons = new _BoxIcons();
-export default boxicons;
+export const boxiconsRegular = new SVGIconLoader(boxiconwRegularSVG);
+export const boxiconsSolid = new SVGIconLoader(boxiconSolidSVG);
+export const boxiconsLogos = new SVGIconLoader(boxiconLogosSVG);
 
 // export class BoxIconsLoader implements ISVGIconLoader {
 //   private _iconNames = [] as string[];

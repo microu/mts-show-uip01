@@ -8,12 +8,9 @@ export interface ISVGIconLoader {
   loadIcon(iconName: string, iconFamily?: string): SVGIcon;
 }
 
-
-
 export class SVGIconLoader implements ISVGIconLoader {
   svgDoc: Document;
   _iconNames?: string[];
-  _iconCache = new Map<string, SVGIcon>()
   iconAttributes: {
     fill?: string | undefined;
     stroke?: string | undefined;
@@ -23,21 +20,26 @@ export class SVGIconLoader implements ISVGIconLoader {
 
   constructor(
     svgSrc: string,
-    iconAttributes: { fill?: string; stroke?: string; "stroke-width"?: string } = {},
-    nameFunc?:(symbol:SVGSymbolElement)=> string
+    iconAttributes: {
+      fill?: string;
+      stroke?: string;
+      "stroke-width"?: string;
+    } = {},
+    nameFunc?: (symbol: SVGSymbolElement) => string
   ) {
     const parser = new DOMParser();
     this.svgDoc = parser.parseFromString(svgSrc, "application/xml");
     // Presentation attributes have lower priority
     // than other CSS style rules specified in author style sheets or ‘style’  attribute
     this.iconAttributes = iconAttributes;
-    this.nameFunc= nameFunc ? nameFunc : (symbol:SVGSymbolElement)=> symbol.id;  
+    this.nameFunc = nameFunc
+      ? nameFunc
+      : (symbol: SVGSymbolElement) => symbol.id;
   }
 
   families(_iconName: string): string[] {
     return ["default"];
   }
-
 
   has(iconName: string, _iconFamily?: string | undefined): boolean {
     return this.iconNames.indexOf(iconName) >= 0;
@@ -52,17 +54,15 @@ export class SVGIconLoader implements ISVGIconLoader {
       const nodes = this.svgDoc.querySelectorAll("symbol");
       this._iconNames = [];
       nodes.forEach((symbol) => {
-        const name = this.nameFunc(symbol)
-          this._iconNames!.push(name);
+        const name = this.nameFunc(symbol);
+        this._iconNames!.push(name);
       });
     }
     return this._iconNames;
   }
 
-  icon(
-    name: string,
-    classes?: TClassNamesArg ): SVGIcon {
-    return new SVGIcon(this.svgElement(name), classes);
+  icon(name: string, classes?: TClassNamesArg): SVGIcon {
+      return new SVGIcon(this.svgElement(name), classes);
   }
 
   svgElement(name: string) {
@@ -84,7 +84,6 @@ export class SVGIconLoader implements ISVGIconLoader {
     return svg;
   }
 }
-
 
 export class SVGIconFamiliesLoader implements ISVGIconLoader {
   _iconNames: string[];

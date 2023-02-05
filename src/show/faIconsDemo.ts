@@ -1,5 +1,5 @@
 import { UIPParent } from "mts-uip";
-import boxicons from "../icons/boxicons";
+import boxicons, { boxiconsLogos, boxiconsRegular, boxiconsSolid } from "../icons/boxicons";
 import { faBrands } from "../icons/faBrandsIconLoader";
 import { faRegular } from "../icons/faRegularIconLoader";
 import { faSolid } from "../icons/faSolidIconLoader";
@@ -82,31 +82,28 @@ export class FAIconsDemo extends UIPParent {
     }
     this.appendChild(hero24OutlineIcons);
 
-    const boxIconsRegular = new UIPParent(`<div class="flex gap-2"></div>`);
-    n = boxicons.regular.iconNames.length;
+    const boxiconsRegularElt = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxiconsRegular.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
-      const name = boxicons.regular.iconNames[Math.floor(Math.random() * n)];
-      boxIconsRegular.appendChild(boxicons.regular.loadIcon(name));
+      const name = boxiconsRegular.iconNames[Math.floor(Math.random() * n)];
+      boxiconsRegularElt.appendChild(boxiconsRegular.loadIcon(name));
     }
-    this.appendChild(boxIconsRegular);
+    this.appendChild(boxiconsRegularElt);
 
-    const boxIconsLogos = new UIPParent(`<div class="flex gap-2"></div>`);
-    n = boxicons.logos.iconNames.length;
+    const boxIconsLogosElt = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxiconsLogos.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
-      const name = boxicons.logos.iconNames[Math.floor(Math.random() * n)];
-      boxIconsLogos.appendChild(boxicons.logos.loadIcon(name));
+      const name = boxiconsLogos.iconNames[Math.floor(Math.random() * n)];
+      boxIconsLogosElt.appendChild(boxiconsLogos.loadIcon(name));
     }
-    this.appendChild(boxIconsLogos);
+    this.appendChild(boxIconsLogosElt);
 
-
-    const boxIconsSolid = new UIPParent(`<div class="flex gap-2"></div>`);
-    n = boxicons.solid.iconNames.length;
+    const boxIconsSolidElt = new UIPParent(`<div class="flex gap-2"></div>`);
+    n = boxiconsSolid.iconNames.length;
     for (let i = 0; i < 16; i += 1) {
-      const name = boxicons.solid.iconNames[Math.floor(Math.random() * n)];
-      boxIconsSolid.appendChild(boxicons.solid.loadIcon(name));
+      const name = boxiconsSolid.iconNames[Math.floor(Math.random() * n)];
+      boxIconsSolidElt.appendChild(boxiconsSolid.loadIcon(name));
     }
-    this.appendChild(boxIconsSolid);
-
-
+    this.appendChild(boxIconsSolidElt);
   }
 }
