@@ -1,3 +1,13 @@
+//
+// fortawesome SVG icon loaders provided as javascript objects
+// by the following packages
+//
+// - @fortawesome/free-brands-svg-icons  (^6.2.1),
+// - @fortawesome/free-regular-svg-icons (^6.2.1),
+// - @fortawesome/free-solid-svg-icons": (^6.2.1), 
+//
+
+
 import { SVGIcon } from "./svgIcon";
 import { ISVGIconLoader } from "./svgIconLoader";
 
